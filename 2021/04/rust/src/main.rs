@@ -180,9 +180,8 @@ fn part_2(bingo_numbers: &Vec<usize>, all_boards: &mut Vec<BingoBoard>) {
 fn bingo_bango(bingo_numbers: &Vec<usize>, all_boards: &mut Vec<BingoBoard>) -> usize {
     for bingo_number in bingo_numbers {
         for board in all_boards.iter_mut() {
-            board.mark_match(*bingo_number);
-
-            if board.bingo_check() {
+            let match_found = board.mark_match(*bingo_number);
+            if match_found && board.bingo_check() {
                 return board.board_score(*bingo_number);
             }
         }
@@ -201,9 +200,8 @@ fn bingo_loseo(bingo_numbers: &Vec<usize>, all_boards: &mut Vec<BingoBoard>) -> 
                 continue;
             }
 
-            board.mark_match(*bingo_number);
-
-            if board.bingo_check() {
+            let match_found = board.mark_match(*bingo_number);
+            if match_found && board.bingo_check() {
                 board.winner = true;
                 non_winning_boards -= 1;
             }
