@@ -1,21 +1,17 @@
+use advent_input_parser::parse_by_line;
 use std::collections::VecDeque;
-use std::error;
 use std::io;
 
-fn main() -> Result<(), Box<dyn error::Error>> {
+fn main() {
+    let parsed_input = parse_by_line(io::stdin().lock());
+
     let mut depths: VecDeque<usize> = VecDeque::new();
-
-    loop {
-        let mut input = String::new();
-
-        let result = io::stdin().read_line(&mut input)?;
-
-        // This occurs when EOF has been reached
-        if result == 0 {
-            break;
-        }
-
-        depths.push_back(input.trim().parse::<usize>()?);
+    for value in parsed_input {
+        depths.push_back(
+            value
+                .parse::<usize>()
+                .expect("Expected an unsigned integer!"),
+        );
     }
 
     let part_1_answer = count_depth_increases(depths.clone());
@@ -23,8 +19,6 @@ fn main() -> Result<(), Box<dyn error::Error>> {
 
     let part_2_answer = count_sliding_window_depth_increases(depths.clone());
     println!("Part 2 answer: {:?}", part_2_answer);
-
-    Ok(())
 }
 
 // Count the number of times the depth increases.
