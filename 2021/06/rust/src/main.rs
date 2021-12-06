@@ -104,14 +104,13 @@ impl BreedingPoolV2 {
             // This is also the amount to add to the DEFAULT_TIMER
             // bucket, because they are grown up fishies that need their timer
             // reset.
-            let new_fish = self.fishies.get(&0).unwrap().clone();
-            // Cloning so that we no longer need to mutably borrow this hashmap
+            let new_fish = self.fishies.remove(&0).unwrap();
 
             // Handle all buckets but 0. 0 is a special case handled at the end,
             // all other buckets get their number moved down 1.
             for bucket in 1..DEFAULT_BABY_TIMER + 1 {
-                self.fishies
-                    .insert(bucket - 1, *self.fishies.get(&bucket).unwrap());
+                let new_bucket_amount = self.fishies.remove(&bucket).unwrap();
+                self.fishies.insert(bucket - 1, new_bucket_amount);
             }
 
             // This key is now empty, now that we've moved down all fish.
